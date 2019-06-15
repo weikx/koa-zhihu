@@ -1,4 +1,4 @@
-const db = [{name: 'weikx'}]
+const db = [{ name: 'weikx' }]
 
 class UsersCtl {
   find (ctx) {
@@ -9,16 +9,16 @@ class UsersCtl {
   }
   create (ctx) {
     ctx.verifyParams({
-      name: {type: 'string'},
-      age: {type: 'number', required: false}
+      name: { type: 'string' },
+      age: { type: 'number', required: false }
     })
     db.push(ctx.request.body)
     ctx.body = ctx.request.body
   }
   update (ctx) {
     ctx.verifyParams({
-      name: {type: 'string'},
-      age: {type: 'number', required: false}
+      name: { type: 'string' },
+      age: { type: 'number', required: false }
     })
     db[ctx.params.id * 1] = ctx.request.body
     ctx.body = ctx.request.body
