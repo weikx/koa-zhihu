@@ -3,7 +3,7 @@ const router = new Router({ prefix: '/users' })
 const jwt = require('koa-jwt')
 const { find, findById, create, update, delete: del, login, checkOwner } = require('../controllers/users')
 const { secret } = require('../config')
-console.log(secret)
+
 const auth = jwt({ secret })
 
 router.get('/', find)
