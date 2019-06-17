@@ -5,7 +5,7 @@ class UsersCtl {
   async find (ctx) {
     ctx.body = await User.find()
   }
-  
+
   async findById (ctx) {
     const user = await User.findById(ctx.params.id)
     if (!user) ctx.throw(404, '用户不存在')
@@ -50,6 +50,11 @@ class UsersCtl {
     const { _id, name} = user
     const token = jsonwebtoken.sign({ _id, name }, screct)
     ctx.body = { token }
+  }
+
+  async checkOwner (ctx, next) {
+    if (ctx.params.id !== ctx.state.user._id) ctx.throw(403, '没有权限')
+    await next()
   }
 }
 
