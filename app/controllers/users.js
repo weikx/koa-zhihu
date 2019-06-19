@@ -65,13 +65,18 @@ class UsersCtl {
     ctx.body = { token, _id, name }
   }
 
-  async listFollowing (ctx) {
+  async listFollowing(ctx) {
     const user = await User.findById(ctx.params.id).select('+following').populate('following')
     if (!user) ctx.throw(404, '用户不存在')
     ctx.body = user.following
   }
 
-  async follow (ctx) {
+  async listFollowers(ctx) {
+    const users = await User.find({ following: ctx.params.id })
+    ctx.body = users
+  }
+
+  async follow(ctx) {
     const me = await User.findById(ctx.state.user._id).select('+following')
     console.log(me.following)
     if (!me.following.map(id => id.toString()).includes(ctx.params.id)) {
@@ -80,6 +85,17 @@ class UsersCtl {
     }
     ctx.status = 204
   }
+
+  async unfollow(ctx) {
+    const me = await User.findById(ctx.state.user._id).select('+following')
+    const index = me.following.map(id => id.toString()).indexOf(ctx.params.id)
+    if (index > -1) {
+      me.following.splice(index, 1)
+      me.save()
+    }
+    ctx.status = 204
+  }
+
 
   async checkOwner(ctx, next) {
     if (ctx.params.id !== ctx.state.user._id) ctx.throw(403, '没有权限')

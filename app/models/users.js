@@ -32,9 +32,9 @@ const userSchema = new Schema({
     type: [{
       type: Schema.Types.ObjectId,
       ref: 'User'
-    }]
-  },
-  select: false
+    }],
+    select: false
+  }
 })
 
 module.exports = model('User', userSchema)
