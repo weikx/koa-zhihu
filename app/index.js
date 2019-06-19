@@ -6,11 +6,15 @@ const routing = require('./routes')
 const error = require('koa-json-error')
 const parameter = require('koa-parameter')
 const mongoose = require('mongoose')
+const koaStatic = require('koa-static')
 const { connectionStr } = require('./config')
 
 // 使用 mongoose 连接 mongodb
 mongoose.connect(connectionStr, { useNewUrlParser: true, useFindAndModify: false }, () => console.log('MongoDB 连接成功'))
 mongoose.connection.on('error', console.error)
+
+// 使用 koa-static 中间件生成图片地址
+app.use(koaStatic(path.join(__dirname, '/public')))
 
 // 使用 koa-json-error 中间件进行统一错误处理
 app.use(error({
