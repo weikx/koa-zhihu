@@ -65,6 +65,22 @@ class UsersCtl {
     ctx.body = { token, _id, name }
   }
 
+  async listFollowing (ctx) {
+    const user = await User.findById(ctx.params.id).select('+following').populate('following')
+    if (!user) ctx.throw(404, '用户不存在')
+    ctx.body = user.following
+  }
+
+  async follow (ctx) {
+    const me = await User.findById(ctx.state.user._id).select('+following')
+    console.log(me.following)
+    if (!me.following.map(id => id.toString()).includes(ctx.params.id)) {
+      me.following.push(ctx.params.id)
+      me.save()
+    }
+    ctx.status = 204
+  }
+
   async checkOwner(ctx, next) {
     if (ctx.params.id !== ctx.state.user._id) ctx.throw(403, '没有权限')
     await next()
