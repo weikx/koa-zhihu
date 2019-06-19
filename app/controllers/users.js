@@ -76,6 +76,16 @@ class UsersCtl {
     ctx.body = users
   }
 
+  async checkUserExist(ctx, next) {
+    try {
+      const user = await User.findById(ctx.params.id)
+      if (!user) ctx.throw(404, '用户不存在')
+      await next()
+    } catch (err) {
+      ctx.throw(404, '用户不存在')
+    }
+  }
+
   async follow(ctx) {
     const me = await User.findById(ctx.state.user._id).select('+following')
     console.log(me.following)
