@@ -5,7 +5,7 @@ const userSchema = new Schema({
   name: { type: String, required: true },
   password: { type: String, required: true, select: false },
   avatar_url: { type: String },
-  gender: { type: String, enum: ['male', 'femail'], required: true },
+  gender: { type: String, enum: ['male', 'female'], default: 'male', required: true },
   headline: { type: String },
   locations: { type: [{ type: String }] },
   business: { type: String },
@@ -16,11 +16,15 @@ const userSchema = new Schema({
     }]
   },
   education: {
-    school: { type: String },
-    mojor: { type: String },
-    deploma: { type: Number, enum: [1, 2, 3, 4, 5] },
-    entrance_year: { type: Number },
-    gurdation_year: { type: Number }
+    type: [
+      {
+        school: { type: String },
+        mojor: { type: String },
+        deploma: { type: Number, enum: [1, 2, 3, 4, 5] },
+        entrance_year: { type: Number },
+        gurdation_year: { type: Number }
+      }
+    ]
   }
 })
 
