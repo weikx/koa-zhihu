@@ -1,6 +1,7 @@
 const Koa = require('koa')
 const app = new Koa()
-const bodyparser = require('koa-bodyparser')
+const path = require('path')
+const koaBody = require('koa-body')
 const routing = require('./routes')
 const error = require('koa-json-error')
 const parameter = require('koa-parameter')
@@ -13,7 +14,15 @@ mongoose.connection.on('error', console.error)
 app.use(error({
   postFormat: (err, { stack, ...rest }) => process.env.NODE_ENV === 'production' ? rest : { stack, rest }
 }))
-app.use(bodyparser())
+
+app.use(koaBody({
+  multipart: true,
+  formidable: {
+    uploadDir: path.join(__dirname, '/public/uploads'),
+    keepExtensions: true
+  }
+}))
+
 app.use(parameter(app))
 routing(app)
 
