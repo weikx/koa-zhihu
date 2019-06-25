@@ -2,7 +2,10 @@ const Topic = require('../models/topic')
 
 class TopicCtl {
   async find(ctx) {
-    ctx.body = await Topic.find()
+    const defaultPerPage = 10
+    const perPage = Math.max(ctx.query.per_page * 1, 1)
+    const page = Math.max(ctx.query.page * 1, 1) - 1
+    ctx.body = await Topic.find().limit(perPage || defaultPerPage).skip(page * perPage || page * defaultPerPage)
   }
   async findById(ctx) {
     const { fields = '' } = ctx.query
