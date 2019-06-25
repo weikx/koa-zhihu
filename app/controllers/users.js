@@ -6,7 +6,10 @@ class UsersCtl {
     const defaultPerPage = 10
     const perPage = Math.max(ctx.query.per_page * 1, 1)
     const page = Math.max(ctx.query.page * 1, 1) - 1
-    ctx.body = await User.find().limit(perPage || defaultPerPage).skip(page * perPage || page * defaultPerPage)
+    ctx.body = await User
+      .find({ name: new RegExp(ctx.query.q) })
+      .limit(perPage || defaultPerPage)
+      .skip(page * perPage || page * defaultPerPage)
   }
 
   async findById(ctx) {
