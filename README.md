@@ -2,8 +2,8 @@
 
 ```tree
 koa-zhihu
-├── README.md
-├── app
+├── README.md             // README
+├── app                   // 主代码目录
 │   ├── config.js         // 依赖配置
 │   ├── controllers       // 控制器
 │   │   ├── home.js       // 主页模块
